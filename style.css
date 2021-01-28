@@ -22,6 +22,11 @@
 #floating_card > img {
     height: 100%;
 }
+#front-matter {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
 
 #overlay {
     position: fixed;
@@ -32,14 +37,13 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0,0,0,0.7);
     z-index: 2;
     cursor: pointer;
 }
 
 body {
     background-color: #eeeeee;
-    font-size: 14pxs;
 }
 #menu {
     display: flex;
@@ -47,4 +51,3 @@ body {
     flex-direction: row;
     justify-content: center;
 }
-
