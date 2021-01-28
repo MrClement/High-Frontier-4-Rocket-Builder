@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>High Fronter Rocket Builder</title>
+        <link rel="stylesheet" href="style.css"> 
+    </head>
+    <body>
+        <div id="menu">
+            <div class="menu-item">
+            <input type="checkbox" class="card-type" name="thruster" id="thruster-check" checked>
+            <label for="thruster-check">Thrusters</label>
+            </div>  
+            <div class="menu-item">
+            <input type="checkbox" class="card-type" name="generator" id="generator-check">
+            <label for="generator-check">Generators</label>
+            </div>  
+            <div class="menu-item">
+            <input type="checkbox" class="card-type" name="robonaut" id="robonaut-check">
+            <label for="robonaut-check">Robonauts</label>
+            </div>
+            <div class="menu-item">
+            <input type="checkbox" class="card-type" name="reactor" id="reactor-check">
+            <label for="reactor-check">Reactors</label>
+            </div>
+            <div class="menu-item">
+            <input type="checkbox" class="card-type" name="radiator" id="radiator-check">
+            <label for="radiator-check">Radiators</label>
+            </div>
+            <div class="menu-item">
+            <input type="checkbox" class="card-type" name="refinery" id="refinery-check">
+            <label for="refinery-check">Refineries</label>
+            </div>
+        </div>
+        <div id="card-display">
+
+        </div>
+        <div id="overlay" onclick="off()">
+        </div>
+        <div id="floating_card" style="display:none" >
+            <img id="floating_card_img" src="images/thruster_1_front.png" >
+        </div>
+    </body>
+    <script src="scripts.js"></script>
+</html>
