@@ -107,10 +107,40 @@ document.querySelectorAll(".card-type").forEach((n) => n.addEventListener('chang
     types = [];
     document.querySelectorAll(".card-type").forEach(n => {
         if(n.checked) {
-            types.push(n.name);
+            types.push(n.id.split("-")[0]);
         }
     });
     update_view(types);
 }));
 
-document.querySelectorAll( ":hover" );
+
+
+window.onscroll = function() {updateHeader()};
+
+const header = document.querySelector(".header");
+const sticky = header.offsetTop;
+
+function updateHeader() {
+  if (window.pageYOffset > sticky) {
+    header.classList.add("sticky");
+  } else {
+    header.classList.remove("sticky");
+  }
+}
+
+function openNav() {
+    document.getElementById("dropdown").classList.add("show");
+}
+  
+window.onclick = function(event) {
+    if (!event.target.matches('.open-btn')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+        var openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+        }
+        }
+    }
+}

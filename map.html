@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>High Fronter Map Viewer</title>
+        <link rel="stylesheet" href="leaflet.css" />
+        <link rel="stylesheet" href="water-mod.css"> 
+        <link rel="stylesheet" href="map_styles.css" />
+    </head>
+    <body>
+        <div class="header">
+            <div class="dropdown-container">
+                <button class="open-btn" onclick="openNav()">&#9776;</button>
+                <div id="dropdown" class="dropdown-content">
+                    <a href="index.html">Cards</a>
+                    <a href="builder.html">Builder</a>
+                  </div>
+                </div>
+        </div>
+        <div class="content">
+            <div id="map">
+            </div>
+        </div>
+        
+    </body>
+    <script src="leaflet.js"></script>
+    <script src="map_scripts.js"></script>
+</html>
