@@ -1,11 +1,28 @@
-const map = L.map('map', {
-    crs: L.CRS.Simple,
-    minZoom: -3
+var extent = [0, 0, 5232, 3520];
+var projection = new ol.proj.Projection({
+  code: 'local_image',
+  units: 'pixels',
+  extent: extent,
 });
 
-const bounds = [[0,0], [3520,5322]];
-const image = L.imageOverlay('images/map.png', bounds).addTo(map);
-map.fitBounds(bounds);
+var map = new ol.Map({
+  controls: [],
+  target: 'map',
+  view: new ol.View({
+      projection: projection,
+      center: ol.extent.getCenter(extent),
+      zoom: 3,
+  }),
+});
+
+var im_layer = new ol.layer.Image({
+  source: new ol.source.ImageStatic({
+      url: 'images/map.png',  
+      projection: projection,
+      imageExtent: extent
+  })
+})
+map.addLayer(im_layer)
 
 
 window.onscroll = function() {updateHeader()};
