@@ -5,7 +5,7 @@ fetch("flat_card_data.json")
   .then(json => {
       card_data = json;
       create_cards().then(() => {
-        update_view(["thruster"]);
+        update_view("thruster");
       })
       
   });
@@ -20,9 +20,11 @@ function create_cards() {
     });
 }
 
-function update_view(types) {
+function update_view(search) {
+    let target_ids = [];
+    target_ids = card_data.
     document.querySelectorAll('.card').forEach(el => {
-        if([...el.classList].filter(x => types.includes(x)).length > 0) {
+        if(target_ids.indexOf(el.id) >= 0) {
             el.style.display = "block";
         } else {
             el.style.display = "none";
@@ -48,7 +50,7 @@ function create_card(id, type, front, back) {
     new_card.classList.add(type);
     new_card.id = id;
     new_card.style.display = "none";
-    document.querySelector('#card-display').appendChild(new_card);
+    document.querySelector('#card-finder').appendChild(new_card);
 }
 
 document.addEventListener('keydown', function (e) {

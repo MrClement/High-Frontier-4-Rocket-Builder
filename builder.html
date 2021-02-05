@@ -1,26 +1,43 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>High Fronter Ship Builder</title>
+        <title>High Frontier Rocket Builder</title>
         <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
         <link rel="stylesheet" href="water-mod.css"> 
-        <link rel="stylesheet" href="map_styles.css" />
+        <link rel="stylesheet" href="builder_styles.css"> 
     </head>
     <body>
         <div class="header">
             <div class="dropdown-container">
-                <button class="open-btn" onclick="openNav()">&#9776;</button>
-                <div id="dropdown" class="dropdown-content">
-                    <a href="index.html">Cards</a>
-                    <a href="builder.html">Builder</a>
-                  </div>
+            <button class="open-btn" onclick="openNav()">&#9776;</button>
+            <div id="dropdown" class="dropdown-content">
+                <a href="index.html">Cards</a>
+                <a href="map.html">Map</a>
+              </div>
+            </div>
+            <div id="front-matter"> 
+                <div>
+                    <h1>High Frontier Rocket Builder</h1>
+                    <p>Press <b>Alt</b> or <b>f</b> to focus on a card and <b>Shift</b> or <b>b</b> to view the backs.</p>
                 </div>
-        </div>
-        <div class="content">
-            <div id="map">
             </div>
         </div>
-        
+        <div class="content tab-panel">
+            <div id="card-finder">
+                <div id="menu">
+                   <input type="text" name="build-search" id="build-search" value="thruster">
+                </div>
+            </div>
+            <div id="overlay" onclick="off()"></div>
+            <div id="floating_card" style="display:none" >
+                <img id="floating_card_img" src="images/thruster_1_front.png" >
+            </div>
+            <div id="rocket">
+            </div>
+            <div id="build-menu">
+            </div>
+        </div>
     </body>
-    <script src="leaflet.js"></script>
+    <script src="interact.min.js"></script>
+    <script src="builder_scripts.js"></script>
 </html>
