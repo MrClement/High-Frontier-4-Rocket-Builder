@@ -12,9 +12,8 @@ fetch("flat_card_data.json")
 
 function create_cards() {
     return new Promise(function (resolve, reject) {
-        for(key in card_data) {
-            let c = card_data[key];
-            create_card(key, key.split("_")[0], `images/${c.front.image}`, `images/${c.back.image}`);
+        for(c in card_data) {
+            create_card(c.id, c.id.split("_")[0], `images/${c.front.image}`, `images/${c.back.image}`);
         }
         resolve();
     });
