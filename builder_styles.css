@@ -1,9 +1,4 @@
-#card-display {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: center;
-}
+
 .card, .menu-item{
     margin: 0px 10px;
     display: flex;
@@ -56,12 +51,7 @@
 body {
     background-color: #eeeeee;
 }
-#menu {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: center;
-}
+
 h1 {
     margin-bottom: 12px;
 }
@@ -76,7 +66,7 @@ h1 {
 .content {
     padding-top: 10px;
     display: grid;
-    grid-template-columns: 1fr 6fr 1fr;
+    grid-template-columns: 200px 180px auto;
     grid-template-rows: auto;
   }
   
@@ -131,17 +121,29 @@ h1 {
 
 }
 
-#build-search {
-    background-color: #ddd;
-    margin-right: 0px;;
-}
-
 #rocket {
-    grid-column: 2 auto;
+    grid-column-start: 3;
+    grid-column-end: 3;
+    overflow: hidden;
 
 }
 
-#build-menu {
-    grid-column: 3 auto;
+#card-list {
+    grid-column-start: 2;
+    grid-column-end: 2;
+    overflow-y: scroll;
+    height: 90vh;
+}
 
+#part-type {
+    background-color: #ddd;
+}
+
+.draggable {
+    touch-action: none;
+    user-select: none;
+}
+
+.drop-activate {
+    background-color: #ddd;
 }

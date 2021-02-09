@@ -22,19 +22,29 @@
                 </div>
             </div>
         </div>
-        <div class="content tab-panel">
-            <div id="card-finder">
-                <div id="menu">
-                   <input type="text" name="build-search" id="build-search" value="thruster">
+        <div class="content">
+            <div id="menu">
+                <div id="card-finder">
+                    <select id="part-type">
+                        <option value="all">All</option>
+                        <option value="thruster">Thrusters</option>
+                        <option value="generator">Generators</option>
+                        <option value="robonaut">Robonauts</option>
+                        <option value="reactor">Reactors</option>
+                        <option value="radiator">Radiators</option>
+                        <option value="refinery">Refineries</option>
+                        <option value="gw">GW/TW Thrusters</option>
+                        <option value="freighter">Freighters</option>
+                    </select>
                 </div>
+            </div>
+            <div id="card-list">
             </div>
             <div id="overlay" onclick="off()"></div>
             <div id="floating_card" style="display:none" >
                 <img id="floating_card_img" src="images/thruster_1_front.png" >
             </div>
             <div id="rocket">
-            </div>
-            <div id="build-menu">
             </div>
         </div>
     </body>
