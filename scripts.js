@@ -1,6 +1,6 @@
 let card_data;
 
-fetch("card_data.json")
+fetch("flat_card_data.json")
   .then(response => response.json())
   .then(json => {
       card_data = json;
@@ -12,13 +12,8 @@ fetch("card_data.json")
 
 function create_cards() {
     return new Promise(function (resolve, reject) {
-        let cards = {};
-        Object.keys(card_data).forEach((type) => {
-            Object.assign(cards, card_data[type])
-        });
-        for(key in cards) {
-            let c = cards[key];
-            create_card(key, key.split("_")[0], `images/${c.front.image}`, `images/${c.back.image}`);
+        for(c of card_data) {
+            create_card(c.id, c.id.split("_")[0], `images/${c.front.image}`, `images/${c.back.image}`);
         }
         resolve();
     });
