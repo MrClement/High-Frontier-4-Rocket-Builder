@@ -142,6 +142,7 @@ h1 {
 .draggable {
     touch-action: none;
     user-select: none;
+    box-sizing: border-box;
 }
 
 .drop-activate {

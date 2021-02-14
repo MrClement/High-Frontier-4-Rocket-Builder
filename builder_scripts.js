@@ -7,15 +7,7 @@ fetch("flat_card_data.json")
   .then(json => {
       card_data = json;
       create_cards().then(() => {
-        document.querySelectorAll(".in-list").forEach((n) => n.addEventListener('click', function (e) {
-            let card = e.target.parentElement;
-            if([...card.classList].indexOf('in-list') >= 0) {
-                document.querySelector("#card-list").removeChild(card);
-                card.classList.remove('in-list');
-                document.querySelector("#rocket").appendChild(card);
-            }
-            card.classList.add('draggable');
-        }));
+        document.querySelectorAll(".in-list").forEach((n) => n.addEventListener('click', addCardToBuild));
         update_view({type: "all"});
       })
       
@@ -52,11 +44,9 @@ function create_card(id, type, front, back) {
     let new_card = document.createElement('div');
     let front_img = document.createElement('img');
     front_img.src = front;
-    front_img.width = "150";
     front_img.classList.add("f");
     let back_img = document.createElement('img');
     back_img.style.display = "none";
-    back_img.width = "150"
     back_img.classList.add("b");
     back_img.src = back;
     new_card.appendChild(front_img);
@@ -118,6 +108,69 @@ document.addEventListener('keyup', function (e) {
     }
 });
 
+function addCardToBuild (e) {
+    let card = e.target.parentElement;
+    if([...card.classList].indexOf('in-list') >= 0) {
+        document.querySelector("#card-list").removeChild(card);
+        card.classList.remove('in-list');
+        document.querySelector("#rocket").appendChild(card);
+        card.classList.add('draggable');
+        card.querySelectorAll('img').forEach((x) => x.style.height = "100%");
+        addButtons(card);
+    }
+}
+
+function removeCardFromBuild (e) {
+    let card = e.target.parentElement.parentElement;
+    if([...card.classList].indexOf('draggable') >= 0) {
+        document.querySelector("#rocket").removeChild(card);
+        card.classList.add('in-list');
+        document.querySelector("#card-list").appendChild(card);
+    }
+    card.classList.remove('draggable');
+    card.querySelectorAll('img').forEach((x) => x.style.height = "");
+    removeButtons(card);
+}
+
+function addButtons(card) {
+    let buttonContainer = document.createElement("div");
+    let flip = document.createElement("button");
+    flip.innerHTML = "↶";
+    flip.style.width = "40px";
+    flip.style.padding = "0px;";
+    flip.addEventListener('click', flipCard);
+    let remove = document.createElement("button");
+    remove.innerHTML = "🗑";
+    remove.style.width = "40px";
+    remove.style.padding = "0px;";
+    remove.addEventListener('click', removeCardFromBuild);
+    buttonContainer.style.height = "80px";
+    buttonContainer.style.width = "40px";
+    buttonContainer.style.position = "relative";
+    buttonContainer.style.top = "85px";
+    buttonContainer.style.left = "5px";
+    buttonContainer.appendChild(flip);
+    buttonContainer.appendChild(remove);
+    buttonContainer.classList.add("card-buttons")
+    card.prepend(buttonContainer);
+} 
+
+function removeButtons(card) {
+    card.removeChild(card.querySelector('.card-buttons'));
+} 
+
+
+function flipCard(e) {
+    let card = e.target.parentElement.parentElement;
+    card.querySelectorAll('img').forEach((x) => {
+        if(x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    });
+}
+
 
 document.querySelector("#part-type").addEventListener('change', function(e) {
     update_view({type: e.target.value});
@@ -152,20 +205,46 @@ window.onclick = function(event) {
         }
     }
 }
-
-
-interact('.draggable').draggable({
-    listeners: {
-      start (event) {
-        console.log(event.type, event.target)
-      },
-      move (event) {
-        position.x += event.dx
-        position.y += event.dy
   
-        event.target.style.transform =
-          `translate(${position.x}px, ${position.y}px)`
-      }
-    }
-  })
+function dragMoveListener (event) {
+    var target = event.target,
+    // keep the dragged position in the data-x/data-y attributes
+    x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+    y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
 
+// translate the element
+    target.style.webkitTransform =
+    target.style.transform =
+        'translate(' + x + 'px, ' + y + 'px)';
+
+    // update the posiion attributes
+    target.setAttribute('data-x', x);
+    target.setAttribute('data-y', y);
+}
+
+interact('.draggable')
+  .draggable({
+    onmove: window.dragMoveListener
+  })
+  .resizable({
+    edges: { left: true, right: true, bottom: true, top: true }
+  })
+  .on('resizemove', function (event) {
+    var target = event.target;
+        x = (parseFloat(target.getAttribute('data-x')) || 0),
+        y = (parseFloat(target.getAttribute('data-y')) || 0);
+
+    // update the element's style
+    target.style.width  = event.rect.width + 'px';
+    target.style.height = event.rect.height + 'px';
+
+    // translate when resizing from top or left edges
+    x += event.deltaRect.left;
+    y += event.deltaRect.top;
+
+    target.style.webkitTransform = target.style.transform =
+        'translate(' + x + 'px,' + y + 'px)';
+
+    target.setAttribute('data-x', x);
+    target.setAttribute('data-y', y);
+});
