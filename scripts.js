@@ -12,7 +12,7 @@ fetch("flat_card_data.json")
 
 function create_cards() {
     return new Promise(function (resolve, reject) {
-        for(c in card_data) {
+        for(c of card_data) {
             create_card(c.id, c.id.split("_")[0], `images/${c.front.image}`, `images/${c.back.image}`);
         }
         resolve();
