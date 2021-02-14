@@ -4,23 +4,50 @@
         <title>High Fronter Ship Builder</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🚀</text></svg>">
         <link rel="stylesheet" href="water-mod.css"> 
-        <link rel="stylesheet" href="map_styles.css" />
+        <link rel="stylesheet" href="builder_styles.css"> 
     </head>
     <body>
         <div class="header">
             <div class="dropdown-container">
-                <button class="open-btn" onclick="openNav()">&#9776;</button>
-                <div id="dropdown" class="dropdown-content">
-                    <a href="index.html">Cards</a>
-                    <a href="builder.html">Builder</a>
-                  </div>
+            <button class="open-btn" onclick="openNav()">&#9776;</button>
+            <div id="dropdown" class="dropdown-content">
+                <a href="index.html">Cards</a>
+                <a href="map.html">Map</a>
+              </div>
+            </div>
+            <div id="front-matter"> 
+                <div>
+                    <h1>High Frontier Rocket Builder</h1>
+                    <p>Filter to find cards. Click to move them into the build area.</p>
                 </div>
-        </div>
-        <div class="content">
-            <div id="map">
             </div>
         </div>
-        
+        <div class="content">
+            <div id="menu">
+                <div id="card-finder">
+                    <select id="part-type">
+                        <option value="all">All</option>
+                        <option value="thruster">Thrusters</option>
+                        <option value="generator">Generators</option>
+                        <option value="robonaut">Robonauts</option>
+                        <option value="reactor">Reactors</option>
+                        <option value="radiator">Radiators</option>
+                        <option value="refinery">Refineries</option>
+                        <option value="gw">GW/TW Thrusters</option>
+                        <option value="freighter">Freighters</option>
+                    </select>
+                </div>
+            </div>
+            <div id="card-list">
+            </div>
+            <div id="overlay" onclick="off()"></div>
+            <div id="floating_card" style="display:none" >
+                <img id="floating_card_img" src="images/thruster_1_front.png" >
+            </div>
+            <div id="rocket">
+            </div>
+        </div>
     </body>
-    <script src="leaflet.js"></script>
+    <script src="interact.min.js"></script>
+    <script src="builder_scripts.js"></script>
 </html>
