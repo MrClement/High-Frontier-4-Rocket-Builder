@@ -1,5 +1,4 @@
 let card_data;
-const position = { x: 0, y: 0 }
 
 
 fetch("flat_card_data.json")
@@ -44,6 +43,7 @@ function create_card(id, type, front, back) {
     let new_card = document.createElement('div');
     let front_img = document.createElement('img');
     front_img.src = front;
+    front_img.style.display = "block";
     front_img.classList.add("f");
     let back_img = document.createElement('img');
     back_img.style.display = "none";
@@ -68,7 +68,7 @@ document.addEventListener('keydown', function (e) {
         if(target) {
             f_card.style.top = "" + (window.innerHeight * .2 + window.scrollY) + "px";
             let img_target = document.querySelector("#floating_card_img");
-            img_target.src = target.querySelector("img.f").src;
+            img_target.src = target.querySelector('img[style*="display: block;"]').src;
             f_card.style.display = "flex";
             document.getElementById("overlay").style.display = "block";
         } else {
@@ -136,13 +136,13 @@ function addButtons(card) {
     let buttonContainer = document.createElement("div");
     let flip = document.createElement("button");
     flip.innerHTML = "↶";
-    flip.style.width = "40px";
-    flip.style.padding = "0px;";
+    flip.style.width = "30px";
+    flip.style.paddingLeft = "0px;";
     flip.addEventListener('click', flipCard);
     let remove = document.createElement("button");
     remove.innerHTML = "🗑";
-    remove.style.width = "40px";
-    remove.style.padding = "0px;";
+    remove.style.width = "30px";
+    remove.style.paddingLeft = "0px;";
     remove.addEventListener('click', removeCardFromBuild);
     buttonContainer.style.height = "80px";
     buttonContainer.style.width = "40px";
@@ -189,6 +189,25 @@ function updateHeader() {
   }
 }
 
+const mass = document.getElementById('mass');
+
+noUiSlider.create(mass, {
+    start: [0, 12],
+    connect: true,
+    tooltips: [{
+        to: function (value) {
+            return Math.floor(value);
+    }}, {
+        to: function (value) {
+            return Math.floor(value);
+    }}],
+    step: 1,
+    range: {
+        'min': 0,
+        'max': 12
+    }
+});
+
 function openNav() {
     document.getElementById("dropdown").classList.add("show");
 }
@@ -208,16 +227,13 @@ window.onclick = function(event) {
   
 function dragMoveListener (event) {
     var target = event.target,
-    // keep the dragged position in the data-x/data-y attributes
     x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
     y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
 
-// translate the element
     target.style.webkitTransform =
     target.style.transform =
         'translate(' + x + 'px, ' + y + 'px)';
 
-    // update the posiion attributes
     target.setAttribute('data-x', x);
     target.setAttribute('data-y', y);
 }
@@ -231,14 +247,12 @@ interact('.draggable')
   })
   .on('resizemove', function (event) {
     var target = event.target;
-        x = (parseFloat(target.getAttribute('data-x')) || 0),
-        y = (parseFloat(target.getAttribute('data-y')) || 0);
+    x = (parseFloat(target.getAttribute('data-x')) || 0),
+    y = (parseFloat(target.getAttribute('data-y')) || 0);
 
-    // update the element's style
     target.style.width  = event.rect.width + 'px';
     target.style.height = event.rect.height + 'px';
 
-    // translate when resizing from top or left edges
     x += event.deltaRect.left;
     y += event.deltaRect.top;
 
@@ -248,3 +262,18 @@ interact('.draggable')
     target.setAttribute('data-x', x);
     target.setAttribute('data-y', y);
 });
+
+document.querySelector("#save").addEventListener('click', function (e) {
+    let rocket_cards = document.querySelectorAll('#rocket > .draggable');
+    let save_data = {};
+    for(card of rocket_cards) {
+        save_data[card.id] = card.style.cssText;
+    }
+    document.cookie = `save_data=${btoa(JSON.stringify(save_data))}`;
+})
+
+document.querySelector("#load").addEventListener('click', function (e) {
+    let stored_data = document.cookie.replace("save_data=", "")
+    let save_data = JSON.parse(atob(stored_data));
+});
+

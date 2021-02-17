@@ -118,7 +118,23 @@ h1 {
 #card-finder {
     grid-column-start: 1;
     grid-column-end: 1;
+}
 
+#save-load-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+}
+#save-load-buttons > button  {
+    background-color: #ddd;   
+}
+#save {
+    grid-column-start: 1;
+    grid-column-end: 1;
+}
+#load {
+    grid-column-start: 2;
+    grid-column-end: 2;
 }
 
 #rocket {
