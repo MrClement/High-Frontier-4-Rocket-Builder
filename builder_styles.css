@@ -2,6 +2,8 @@
 .card, .menu-item{
     margin: 0px 10px;
     display: flex;
+    height: fit-content;
+    width: fit-content;
 }
 
 .dropdown-container {
