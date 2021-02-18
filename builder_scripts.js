@@ -7,7 +7,7 @@ fetch("flat_card_data.json")
       card_data = json;
       create_cards().then(() => {
         document.querySelectorAll(".in-list").forEach((n) => n.addEventListener('click', addCardToBuild));
-        update_view({type: "all"});
+        update_view();
       })
       
   });
@@ -21,13 +21,43 @@ function create_cards() {
     });
 }
 
-function update_view(search) {
+
+//sliders 
+const mass = document.getElementById('mass');
+
+noUiSlider.create(mass, {
+    start: [0, 12],
+    connect: true,
+    step: 1,
+    range: {
+        'min': 0,
+        'max': 12
+    }
+});
+
+
+mass.noUiSlider.on('update', function (values, handle) {
+    document.querySelector(`#mass-${handle}-val`).innerHTML = Math.floor(values[handle]);
+});
+
+mass.noUiSlider.on('change', function (values, handle) {
+    update_view()
+});
+
+
+function update_view() {
+    let search = {};
+    search.type = document.querySelector("#part-type").value;
+    search.mass = {min: mass.noUiSlider.get()[0], max: mass.noUiSlider.get()[0]};
     let target_ids = [];
     for(c of card_data) {
         let include = true;
         if(search.type !== "all" && c.type !== search.type) {
             include = false;
         }
+        // if(!((search.mass.min <= c.front.mass || search.mass.min <= c.back.mass) && (search.mass.max >= c.front.mass || search.mass.max >= c.back.mass))) {
+        //     include = false;
+        // }
         if(include) target_ids.push(c.id);
     }
     document.querySelectorAll('.card').forEach(el => {
@@ -40,6 +70,8 @@ function update_view(search) {
         }
     })
 }
+
+
 
 function create_card(id, type, front, back) {
     let new_card = document.createElement('div');
@@ -198,23 +230,7 @@ function updateHeader() {
 }
 
 
-//sliders 
-const mass = document.getElementById('mass');
 
-noUiSlider.create(mass, {
-    start: [0, 12],
-    connect: true,
-    step: 1,
-    range: {
-        'min': 0,
-        'max': 12
-    }
-});
-
-
-mass.noUiSlider.on('update', function (values, handle) {
-    document.querySelector(`#mass-${handle}-val`).innerHTML = Math.floor(values[handle]);
-});
 
 function openNav() {
     document.getElementById("dropdown").classList.add("show");
