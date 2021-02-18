@@ -2,6 +2,9 @@
 .card, .menu-item{
     margin: 0px 10px;
     display: flex;
+    height: fit-content;
+    width: fit-content;
+    background-color: cornflowerblue;
 }
 
 .dropdown-container {
@@ -10,6 +13,7 @@
     right: 20px;
     text-align: right;
 }
+
 .open-btn {
     font-size: 2em;
 }
@@ -164,3 +168,27 @@ h1 {
 .drop-activate {
     background-color: #ddd;
 }
+
+.noUi-connect {
+    background: #ddd;
+}
+
+.slider-label {
+    font-weight: bold;
+}
+
+.slider-container {
+    padding-top: 5px;
+}
+
+.slider {
+    margin-top: 5px;
+}
+
+.noUi-horizontal .noUi-handle {
+    width: 16px;
+    height: 24px;
+    right: -8px;
+    top: -4px;
+}
+
