@@ -1,5 +1,4 @@
 let card_data;
-const position = { x: 0, y: 0 }
 
 
 fetch("flat_card_data.json")
@@ -8,7 +7,7 @@ fetch("flat_card_data.json")
       card_data = json;
       create_cards().then(() => {
         document.querySelectorAll(".in-list").forEach((n) => n.addEventListener('click', addCardToBuild));
-        update_view({type: "all"});
+        update_view();
       })
       
   });
@@ -22,28 +21,63 @@ function create_cards() {
     });
 }
 
-function update_view(search) {
+
+//sliders 
+const mass = document.getElementById('mass');
+
+noUiSlider.create(mass, {
+    start: [0, 12],
+    connect: true,
+    step: 1,
+    range: {
+        'min': 0,
+        'max': 12
+    }
+});
+
+
+mass.noUiSlider.on('update', function (values, handle) {
+    document.querySelector(`#mass-${handle}-val`).innerHTML = Math.floor(values[handle]);
+});
+
+mass.noUiSlider.on('change', function (values, handle) {
+    update_view()
+});
+
+
+function update_view() {
+    let search = {};
+    search.type = document.querySelector("#part-type").value;
+    search.mass = {min: mass.noUiSlider.get()[0], max: mass.noUiSlider.get()[0]};
     let target_ids = [];
     for(c of card_data) {
         let include = true;
         if(search.type !== "all" && c.type !== search.type) {
             include = false;
         }
+        // if(!((search.mass.min <= c.front.mass || search.mass.min <= c.back.mass) && (search.mass.max >= c.front.mass || search.mass.max >= c.back.mass))) {
+        //     include = false;
+        // }
         if(include) target_ids.push(c.id);
     }
     document.querySelectorAll('.card').forEach(el => {
-        if(target_ids.indexOf(el.id) >= 0 && [...el.classList].indexOf('in-list') >=0) {
+        if(target_ids.indexOf(el.id) >= 0) {
             el.style.display = "block";
         } else {
-            el.style.display = "none";
+            if([...el.classList].indexOf('in-list') >=0) {
+                el.style.display = "none";
+            }
         }
     })
 }
+
+
 
 function create_card(id, type, front, back) {
     let new_card = document.createElement('div');
     let front_img = document.createElement('img');
     front_img.src = front;
+    front_img.style.display = "block";
     front_img.classList.add("f");
     let back_img = document.createElement('img');
     back_img.style.display = "none";
@@ -57,6 +91,8 @@ function create_card(id, type, front, back) {
     new_card.classList.add(type);
     new_card.id = id;
     new_card.style.display = "none";
+    new_card.setAttribute('data-x', 0);
+    new_card.setAttribute('data-y', 0);
     document.querySelector('#card-list').appendChild(new_card);
 }
 
@@ -68,7 +104,7 @@ document.addEventListener('keydown', function (e) {
         if(target) {
             f_card.style.top = "" + (window.innerHeight * .2 + window.scrollY) + "px";
             let img_target = document.querySelector("#floating_card_img");
-            img_target.src = target.querySelector("img.f").src;
+            img_target.src = target.querySelector('img[style*="display: block;"]').src;
             f_card.style.display = "flex";
             document.getElementById("overlay").style.display = "block";
         } else {
@@ -108,50 +144,54 @@ document.addEventListener('keyup', function (e) {
     }
 });
 
-function addCardToBuild (e) {
-    let card = e.target.parentElement;
+function addCardToBuild (e, c) {
+    let card = c || e.target.parentElement;
     if([...card.classList].indexOf('in-list') >= 0) {
         document.querySelector("#card-list").removeChild(card);
         card.classList.remove('in-list');
+        card.style.display = "block";
         document.querySelector("#rocket").appendChild(card);
         card.classList.add('draggable');
+        card.style.position = "absolute";
         card.querySelectorAll('img').forEach((x) => x.style.height = "100%");
         addButtons(card);
     }
 }
 
-function removeCardFromBuild (e) {
-    let card = e.target.parentElement.parentElement;
+function removeCardFromBuild (e, c) {
+    let card = c || e.target.parentElement.parentElement;
     if([...card.classList].indexOf('draggable') >= 0) {
         document.querySelector("#rocket").removeChild(card);
         card.classList.add('in-list');
         document.querySelector("#card-list").appendChild(card);
     }
     card.classList.remove('draggable');
+    card.style.position = "";
     card.querySelectorAll('img').forEach((x) => x.style.height = "");
     removeButtons(card);
+    
 }
 
 function addButtons(card) {
     let buttonContainer = document.createElement("div");
     let flip = document.createElement("button");
     flip.innerHTML = "↶";
-    flip.style.width = "40px";
-    flip.style.padding = "0px;";
+    flip.style.width = "30px";
+    flip.style.paddingLeft = "0px;";
     flip.addEventListener('click', flipCard);
     let remove = document.createElement("button");
     remove.innerHTML = "🗑";
-    remove.style.width = "40px";
-    remove.style.padding = "0px;";
+    remove.style.width = "30px";
+    remove.style.paddingLeft = "0px;";
     remove.addEventListener('click', removeCardFromBuild);
     buttonContainer.style.height = "80px";
     buttonContainer.style.width = "40px";
-    buttonContainer.style.position = "relative";
-    buttonContainer.style.top = "85px";
+    buttonContainer.style.position = "absolute";
+    buttonContainer.style.top = "5px";
     buttonContainer.style.left = "5px";
     buttonContainer.appendChild(flip);
     buttonContainer.appendChild(remove);
-    buttonContainer.classList.add("card-buttons")
+    buttonContainer.classList.add("card-buttons");
     card.prepend(buttonContainer);
 } 
 
@@ -160,8 +200,8 @@ function removeButtons(card) {
 } 
 
 
-function flipCard(e) {
-    let card = e.target.parentElement.parentElement;
+function flipCard(e, c) {
+    let card = c || e.target.parentElement.parentElement;
     card.querySelectorAll('img').forEach((x) => {
         if(x.style.display === "none") {
             x.style.display = "block";
@@ -189,6 +229,9 @@ function updateHeader() {
   }
 }
 
+
+
+
 function openNav() {
     document.getElementById("dropdown").classList.add("show");
 }
@@ -208,16 +251,13 @@ window.onclick = function(event) {
   
 function dragMoveListener (event) {
     var target = event.target,
-    // keep the dragged position in the data-x/data-y attributes
     x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
     y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
 
-// translate the element
     target.style.webkitTransform =
     target.style.transform =
         'translate(' + x + 'px, ' + y + 'px)';
 
-    // update the posiion attributes
     target.setAttribute('data-x', x);
     target.setAttribute('data-y', y);
 }
@@ -231,14 +271,12 @@ interact('.draggable')
   })
   .on('resizemove', function (event) {
     var target = event.target;
-        x = (parseFloat(target.getAttribute('data-x')) || 0),
-        y = (parseFloat(target.getAttribute('data-y')) || 0);
+    x = (parseFloat(target.getAttribute('data-x')) || 0),
+    y = (parseFloat(target.getAttribute('data-y')) || 0);
 
-    // update the element's style
     target.style.width  = event.rect.width + 'px';
     target.style.height = event.rect.height + 'px';
 
-    // translate when resizing from top or left edges
     x += event.deltaRect.left;
     y += event.deltaRect.top;
 
@@ -248,3 +286,43 @@ interact('.draggable')
     target.setAttribute('data-x', x);
     target.setAttribute('data-y', y);
 });
+
+document.querySelector("#save").addEventListener('click', function (e) {
+    let rocket_cards = document.querySelectorAll('#rocket > .draggable');
+    let save_data = {};
+    for(let card of rocket_cards) {
+        let img = card.querySelector('img[style*="display: block;"]');
+        let flipped = [...img.classList].indexOf('b') >= 0;
+        save_data[card.id] = {css: card.style.cssText, "data-x": card.getAttribute('data-x'), "data-y": card.getAttribute('data-y'), flipped: flipped};
+    }
+    document.cookie = `save_data=${btoa(JSON.stringify(save_data))}`;
+})
+
+document.querySelector("#load").addEventListener('click', function (e) {
+    let stored_data = document.cookie.replace("save_data=", "")
+    let save_data = JSON.parse(atob(stored_data));
+    let save_keys = Object.keys(save_data);
+    document.querySelectorAll('.card').forEach(el => {
+        if(save_keys.indexOf(el.id) >= 0) {
+            let data = save_data[el.id];
+            console.log(data);
+            el.style.cssText = data.css;
+            el.setAttribute('data-x', data["data-x"]);
+            el.setAttribute('data-y', data["data-y"]);
+            let img = el.querySelector('img[style*="display: block;"]');
+            if([...el.classList].indexOf('in-list') >=0) {
+                addCardToBuild(null, el);
+            } 
+            if(data.flipped && [...img.classList].indexOf('f') >= 0) {
+                flipCard(null, el);
+            } else if(!data.flipped && [...img.classList].indexOf('b') >= 0) {
+                flipCard(null, el);
+            }
+        } else {
+            if([...el.classList].indexOf('in-list') < 0) {
+                removeCardFromBuild(null, el);
+            }
+        }
+    })
+});
+

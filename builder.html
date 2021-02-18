@@ -4,6 +4,7 @@
         <title>High Fronter Ship Builder</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🚀</text></svg>">
         <link rel="stylesheet" href="water-mod.css"> 
+        <link rel="stylesheet" href="nouislider.min.css"> 
         <link rel="stylesheet" href="builder_styles.css"> 
     </head>
     <body>
@@ -24,6 +25,10 @@
         </div>
         <div class="content">
             <div id="menu">
+                <div id="save-load-buttons">
+                    <button id="save">Save</button>
+                    <button id="load">Load</button>
+                </div>
                 <div id="card-finder">
                     <select id="part-type">
                         <option value="all">All</option>
@@ -36,6 +41,10 @@
                         <option value="gw">GW/TW Thrusters</option>
                         <option value="freighter">Freighters</option>
                     </select>
+                    <!-- <div class="slider-container">
+                        <span class="slider-label">Mass:&nbsp;</span><span class="slider-val" id="mass-0-val">0</span><span>&nbsp;-&nbsp;</span><span class="slider-val" id="mass-1-val">12</span>
+                        <div class="slider" id="mass"></div>
+                    </div> -->
                 </div>
             </div>
             <div id="card-list">
@@ -48,6 +57,7 @@
             </div>
         </div>
     </body>
+    <script src="nouislider.min.js"></script>
     <script src="interact.min.js"></script>
     <script src="builder_scripts.js"></script>
 </html>

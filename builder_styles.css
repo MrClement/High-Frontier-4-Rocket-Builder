@@ -4,6 +4,7 @@
     display: flex;
     height: fit-content;
     width: fit-content;
+    background-color: cornflowerblue;
 }
 
 .dropdown-container {
@@ -12,6 +13,7 @@
     right: 20px;
     text-align: right;
 }
+
 .open-btn {
     font-size: 2em;
 }
@@ -120,7 +122,23 @@ h1 {
 #card-finder {
     grid-column-start: 1;
     grid-column-end: 1;
+}
 
+#save-load-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+}
+#save-load-buttons > button  {
+    background-color: #ddd;   
+}
+#save {
+    grid-column-start: 1;
+    grid-column-end: 1;
+}
+#load {
+    grid-column-start: 2;
+    grid-column-end: 2;
 }
 
 #rocket {
@@ -150,3 +168,27 @@ h1 {
 .drop-activate {
     background-color: #ddd;
 }
+
+.noUi-connect {
+    background: #ddd;
+}
+
+.slider-label {
+    font-weight: bold;
+}
+
+.slider-container {
+    padding-top: 5px;
+}
+
+.slider {
+    margin-top: 5px;
+}
+
+.noUi-horizontal .noUi-handle {
+    width: 16px;
+    height: 24px;
+    right: -8px;
+    top: -4px;
+}
+
