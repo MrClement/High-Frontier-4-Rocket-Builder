@@ -165,6 +165,18 @@ h1 {
     box-sizing: border-box;
 }
 
+.card-buttons {
+    opacity: .2;
+}
+.card-buttons > button{
+    padding-left: 0px;
+    padding-right: 25px;
+}
+
+.card-buttons:hover {
+    opacity: 1;
+}
+
 .drop-activate {
     background-color: #ddd;
 }
